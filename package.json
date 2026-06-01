@@ -9,6 +9,7 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-draggable": "^4.5.0"
