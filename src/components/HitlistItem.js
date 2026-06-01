@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import hljs from 'highlight.js/lib/core';
+import 'highlight.js/lib/common';
+import 'highlight.js/styles/atom-one-dark.css';
+import { parseCodeBlock } from '../utils/code';
 
 export default function HitlistItem({
   listId,
@@ -23,6 +27,13 @@ export default function HitlistItem({
   const dragOverBefore = dragOverState && dragOverState.listId === listId && dragOverState.index === index && dragOverState.position === 'before';
   const dragOverAfter = dragOverState && dragOverState.listId === listId && dragOverState.index === index && dragOverState.position === 'after';
 
+  const parsed = useMemo(() => parseCodeBlock(item.text), [item.text]);
+  const highlighted = useMemo(() => {
+    if (!parsed.code) return '';
+    const lang = parsed.language && hljs.getLanguage(parsed.language) ? parsed.language : 'plaintext';
+    return hljs.highlight(parsed.code, { language: lang }).value;
+  }, [parsed]);
+
   return (
     <li
       key={item.id}
@@ -34,14 +45,39 @@ export default function HitlistItem({
       onDragEnd={onItemDragEnd}
     >
       {isEditing ? (
-        <input
-          className="item-edit-input"
-          value={editingValue}
-          onChange={(e) => setEditingValue(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') saveEditing(); if (e.key === 'Escape') cancelEditing(); }}
-          onBlur={saveEditing}
-          autoFocus
-        />
+        item.type === 'code' ? (
+          <textarea
+            className="item-edit-textarea"
+            value={editingValue}
+            onChange={(e) => setEditingValue(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Escape') cancelEditing(); }}
+            onBlur={saveEditing}
+            autoFocus
+            rows={6}
+          />
+        ) : (
+          <input
+            className="item-edit-input"
+            value={editingValue}
+            onChange={(e) => setEditingValue(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') saveEditing(); if (e.key === 'Escape') cancelEditing(); }}
+            onBlur={saveEditing}
+            autoFocus
+          />
+        )
+      ) : item.type === 'code' ? (
+        <>
+          <div className="code-item-wrapper">
+            {parsed.language && <span className="code-lang-badge">{parsed.language}</span>}
+            <button className="copy-btn" onClick={() => navigator.clipboard.writeText(parsed.code)} aria-label="Copy code">Copy</button>
+            <pre onDoubleClick={() => startEditing(listId, index, item.text)}>
+              <code className={`hljs${parsed.language ? ` language-${parsed.language}` : ''}`} dangerouslySetInnerHTML={{ __html: highlighted }} />
+            </pre>
+          </div>
+          <div className="item-actions">
+            <button className="remove-item" onClick={() => removeItem(listId, index)}>Remove</button>
+          </div>
+        </>
       ) : (
         <>
           <span className="item-text" onDoubleClick={() => startEditing(listId, index, item.text)}>{item.text}</span>

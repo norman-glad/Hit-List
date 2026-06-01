@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 import { PALETTE } from '../constants';
 import HitlistItem from './HitlistItem';
@@ -34,6 +34,17 @@ export default function HitlistWindow({
   setEditingValue,
   removeItem
 }) {
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [codeText, setCodeText] = useState('');
+
+  const handleAddCode = () => {
+    if (codeText.trim()) {
+      addItem(list.id, codeText.trim(), 'code');
+      setCodeText('');
+      setShowCodeInput(false);
+    }
+  };
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -100,16 +111,34 @@ export default function HitlistWindow({
             placeholder="Add item"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && e.target.value) {
-                addItem(list.id, e.target.value);
+                addItem(list.id, e.target.value, 'text');
                 e.target.value = '';
               }
             }}
           />
           <button className="btn small" onClick={(e) => {
-            const input = e.target.previousElementSibling;
-            if (input && input.value) { addItem(list.id, input.value); input.value = ''; }
+            const input = e.target.parentElement.querySelector('.list-input.add');
+            if (input && input.value) { addItem(list.id, input.value, 'text'); input.value = ''; }
           }}>Add</button>
+          <button className={`btn small code ${showCodeInput ? 'active' : ''}`} onClick={() => setShowCodeInput(s => !s)}>Code</button>
         </div>
+        {showCodeInput && (
+          <div className="code-input-area">
+            <textarea
+              className="code-input-textarea"
+              placeholder={'```language\ncode\n```'}
+              value={codeText}
+              onChange={(e) => setCodeText(e.target.value)}
+              onKeyDown={(e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') handleAddCode();
+                if (e.key === 'Escape') { setShowCodeInput(false); setCodeText(''); }
+              }}
+              rows={6}
+              autoFocus
+            />
+            <button className="btn small" onClick={handleAddCode}>Add Code</button>
+          </div>
+        )}
       </div>
     </Draggable>
   );
