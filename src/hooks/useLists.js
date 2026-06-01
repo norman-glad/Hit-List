@@ -33,8 +33,8 @@ export function useLists(initialLists, setShowHome, addToast) {
     setLists(prev => prev.map(list => list.id === id ? { ...list, title: newTitle } : list));
   };
 
-  const addItem = (id, itemText) => {
-    const itemObj = { id: Date.now() + Math.random(), text: itemText };
+  const addItem = (id, itemText, type = 'text') => {
+    const itemObj = { id: Date.now() + Math.random(), text: itemText, type };
     setLists(prev => prev.map(list => list.id === id ? { ...list, items: [...list.items, itemObj] } : list));
   };
 

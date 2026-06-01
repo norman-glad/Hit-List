@@ -14,8 +14,9 @@ export function createNewList(playgroundName) {
 export function normalizeItems(lists) { // <listcontent> -> typecast <string> 
   return lists.map(list => ({
     ...list,
-    items: (list.items || []).map(it =>
-      typeof it === 'string' ? { id: Date.now() + Math.random(), text: it } : it
-    )
+    items: (list.items || []).map(it => {
+      if (typeof it === 'string') return { id: Date.now() + Math.random(), text: it, type: 'text' };
+      return { type: 'text', ...it };
+    })
   }));
 }
