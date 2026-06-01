@@ -288,6 +288,112 @@ body {
   z-index: 220;
 }
 
+.code-item-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.code-item-wrapper pre {
+  margin: 0;
+  padding: 18px 6px 4px;
+  background: transparent;
+  border: 1px solid var(--outline-variant);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre;
+  overflow-x: auto;
+  cursor: text;
+  color: var(--on-surface);
+}
+
+.code-item-wrapper code {
+  font-family: inherit;
+}
+
+.code-lang-badge {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  z-index: 2;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--outline);
+  pointer-events: none;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  color: var(--outline);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: color 0ms;
+}
+
+.copy-btn:hover {
+  color: var(--on-surface);
+}
+
+.item-edit-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--surface-container-lowest);
+  border: 2px solid var(--outline);
+  color: var(--on-surface);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.code-input-area {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.code-input-textarea {
+  width: 100%;
+  padding: 10px;
+  background: var(--surface-container-lowest);
+  border: 2px solid var(--outline-variant);
+  color: var(--on-surface);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.code-input-textarea:focus {
+  outline: none;
+  border-color: var(--power-color);
+}
+
+.btn.small.code {
+  background: var(--surface-container-high);
+  border-color: var(--outline);
+  color: var(--on-surface-variant);
+}
+
+.btn.small.code.active {
+  background: var(--power-color);
+  color: var(--on-primary);
+  border-color: #000000;
+}
+
 .home {
   position: absolute;
   top: 50%;
