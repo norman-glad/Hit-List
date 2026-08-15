@@ -14,7 +14,7 @@ No backend, no database, no accounts. HitLIST encodes your entire workspace — 
 
 ```mermaid
 graph LR
-    A["Browser URL<br/><code>?data=...&op=...&theme=...</code>"] -->|"Page load<br/>readUrlParams()"| B["⚛️ React State<br/><code>lists, operatorName, powerColor</code>"]
+    A["Browser URL"] -->|"Page load<br/>readUrlParams()"| B["⚛️ React State<br/><code>lists, operatorName, powerColor</code>"]
     B -->|"User edits<br/>(add item, drag, rename)"| C["🔄 useUrlSync<br/>buildUrl()"]
     C -->|"history.replaceState()"| A
 ```
